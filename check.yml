@@ -1,0 +1,3 @@
+packages:
+  outparamcheck:
+    main: github.com/palantir/outparamcheck
