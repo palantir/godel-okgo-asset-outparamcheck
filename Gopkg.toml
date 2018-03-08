@@ -23,6 +23,10 @@
 required = ["github.com/palantir/outparamcheck"]
 
 [[constraint]]
+  name = "github.com/palantir/outparamcheck"
+  version = "1.0.0"
+
+[[constraint]]
   branch = "master"
   name = "github.com/dustin/go-humanize"
 
