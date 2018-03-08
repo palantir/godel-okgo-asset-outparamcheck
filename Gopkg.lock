@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/dustin/go-humanize"
   packages = ["."]
@@ -40,7 +46,7 @@
 [[projects]]
   branch = "develop"
   name = "github.com/nmiyake/pkg"
-  packages = ["errorstringer"]
+  packages = ["dirs","errorstringer","gofiles"]
   revision = "b64318170fdef93b4462420e0badef8050dbb7ec"
 
 [[projects]]
@@ -52,20 +58,20 @@
 [[projects]]
   branch = "master"
   name = "github.com/palantir/godel"
-  packages = ["framework/artifactresolver","framework/builtintasks/installupdate/layout","framework/godel","framework/godellauncher","framework/pluginapi","framework/verifyorder","godelgetter","pkg/osarch"]
+  packages = ["framework/artifactresolver","framework/builtintasks/installupdate/layout","framework/godel","framework/godellauncher","framework/internal/pathsinternal","framework/pluginapi","framework/pluginapitester","framework/plugins","framework/verifyorder","godelgetter","pkg/osarch","pkg/products"]
   revision = "23cdea0b00851e6cbdc14f50676c43ba26b47894"
 
 [[projects]]
   branch = "master"
   name = "github.com/palantir/okgo"
-  packages = ["checker","okgo"]
-  revision = "9fe3cca1cc0160545393b17d0a79dc39f9d0ab42"
+  packages = ["checker","okgo","okgotester"]
+  revision = "5aaf4eed32d903ce2f16d6b02397b33e1698c144"
 
 [[projects]]
+  branch = "master"
   name = "github.com/palantir/outparamcheck"
   packages = [".","exprs","outparamcheck"]
-  revision = "bfd84de1d2cf70b6c3976956c2188fd6469d0f2c"
-  version = "v1.0.0"
+  revision = "5786d96763fcad4bd8938541e38fa55a60705264"
 
 [[projects]]
   branch = "master"
@@ -80,6 +86,12 @@
   version = "v0.8.0"
 
 [[projects]]
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/spf13/cobra"
   packages = ["."]
   revision = "7b2c5ac9fc04fc5efafb60700713d4fa609b777b"
@@ -90,6 +102,12 @@
   packages = ["."]
   revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
   version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/stretchr/testify"
+  packages = ["assert","require"]
+  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
+  version = "v1.2.1"
 
 [[projects]]
   branch = "master"
@@ -118,6 +136,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d0f53fcc7b06bb6d37e6f8ecf6fd80e0b77ce70a1581b4570fa666428836c440"
+  inputs-digest = "cffabec701bc754379e7d254dc4aa971a8ea99a599b3051c5e64033f1cce304d"
   solver-name = "gps-cdcl"
   solver-version = 1
