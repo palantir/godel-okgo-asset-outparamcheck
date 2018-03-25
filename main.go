@@ -22,7 +22,8 @@ import (
 	"github.com/palantir/pkg/cobracli"
 
 	"github.com/palantir/godel-okgo-asset-outparamcheck/generated_src"
-	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck"
+	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config"
+	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/creator"
 )
 
 func main() {
@@ -32,6 +33,6 @@ func main() {
 func checkMain(osArgs []string) int {
 	os.Args = osArgs
 	var debugFlagVal bool
-	rootCmd := checker.AssetRootCmd(outparamcheck.Creator(), "run outparamcheck check")
+	rootCmd := checker.AssetRootCmd(creator.Outparamcheck(), config.UpgradeConfig, "run outparamcheck check")
 	return cobracli.ExecuteWithDefaultParamsWithVersion(rootCmd, &debugFlagVal, "")
 }
