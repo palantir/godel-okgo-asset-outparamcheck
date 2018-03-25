@@ -21,10 +21,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/go-yaml/yaml"
 	"github.com/palantir/okgo/checker"
 	"github.com/palantir/okgo/okgo"
-	"github.com/pkg/errors"
 )
 
 const (
@@ -32,41 +30,21 @@ const (
 	Priority okgo.CheckerPriority = 0
 )
 
-func Creator() checker.Creator {
-	return checker.NewCreator(
-		TypeName,
-		Priority,
-		func(cfgYML []byte) (okgo.Checker, error) {
-			var cfg outparamcheckCfg
-			if err := yaml.Unmarshal(cfgYML, &cfg); err != nil {
-				return nil, errors.Wrapf(err, "failed to unmarshal configuration YAML %q", string(cfgYML))
-			}
-			return &outparamcheckCheck{
-				OutParamFns: cfg.OutParamFns,
-			}, nil
-		},
-	)
-}
-
-type outparamcheckCheck struct {
+type Checker struct {
 	OutParamFns map[string][]int
 }
 
-type outparamcheckCfg struct {
-	OutParamFns map[string][]int `yaml:"out-param-fns"`
-}
-
-func (c *outparamcheckCheck) Type() (okgo.CheckerType, error) {
+func (c *Checker) Type() (okgo.CheckerType, error) {
 	return TypeName, nil
 }
 
-func (c *outparamcheckCheck) Priority() (okgo.CheckerPriority, error) {
+func (c *Checker) Priority() (okgo.CheckerPriority, error) {
 	return Priority, nil
 }
 
 var lineRegexp = regexp.MustCompile(`(.+):(\d+):(\d+)\t(.+)`)
 
-func (c *outparamcheckCheck) Check(pkgPaths []string, pkgDir string, stdout io.Writer) {
+func (c *Checker) Check(pkgPaths []string, pkgDir string, stdout io.Writer) {
 	cfgJSON, err := json.Marshal(c.OutParamFns)
 	if err != nil {
 		okgo.WriteErrorAsIssue(err, stdout)
@@ -93,6 +71,6 @@ func (c *outparamcheckCheck) Check(pkgPaths []string, pkgDir string, stdout io.W
 	}, stdout)
 }
 
-func (c *outparamcheckCheck) RunCheckCmd(args []string, stdout io.Writer) {
+func (c *Checker) RunCheckCmd(args []string, stdout io.Writer) {
 	checker.AmalgomatedRunRawCheck(string(TypeName), args, stdout)
 }

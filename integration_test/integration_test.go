@@ -18,13 +18,14 @@ import (
 	"testing"
 
 	"github.com/nmiyake/pkg/gofiles"
+	"github.com/palantir/godel/framework/pluginapitester"
 	"github.com/palantir/godel/pkg/products"
 	"github.com/palantir/okgo/okgotester"
 	"github.com/stretchr/testify/require"
 )
 
 const (
-	okgoPluginLocator  = "com.palantir.okgo:okgo-plugin:0.3.0"
+	okgoPluginLocator  = "com.palantir.okgo:check-plugin:1.0.0-rc3"
 	okgoPluginResolver = "https://palantir.bintray.com/releases/{{GroupPath}}/{{Product}}/{{Version}}/{{Product}}-{{Version}}-{{OS}}-{{Arch}}.tgz"
 
 	godelYML = `exclude:
@@ -36,24 +37,28 @@ const (
 `
 )
 
-func TestOutparamcheck(t *testing.T) {
+func TestCheck(t *testing.T) {
 	assetPath, err := products.Bin("outparamcheck-asset")
 	require.NoError(t, err)
 
 	configFiles := map[string]string{
 		"godel/config/godel.yml": godelYML,
-		"godel/config/check.yml": `
+		"godel/config/check-plugin.yml": `
 checks:
   outparamcheck:
     config:
-      out-param-fns:
+      out-param-funcs:
         "github.com/org/repo/foo.LoadConfig": [1]
 `,
 	}
 
+	pluginProvider, err := pluginapitester.NewPluginProviderFromLocator(okgoPluginLocator, okgoPluginResolver)
+	require.NoError(t, err)
+
 	okgotester.RunAssetCheckTest(t,
-		okgoPluginLocator, okgoPluginResolver,
-		assetPath, "outparamcheck",
+		pluginProvider,
+		pluginapitester.NewAssetProvider(assetPath),
+		"outparamcheck",
 		".",
 		[]okgotester.AssetTestCase{
 			{
@@ -77,6 +82,7 @@ func Foo() {
 				WantOutput: `Running outparamcheck...
 foo.go:7:26: _ = json.Unmarshal(nil, out)  // 2nd argument of 'Unmarshal' requires '&'
 Finished outparamcheck
+Check(s) produced output: [outparamcheck]
 `,
 			},
 			{
@@ -107,6 +113,7 @@ func LoadConfig(in []byte, out interface{}) {}
 				WantOutput: `Running outparamcheck...
 foo.go:7:22: foo.LoadConfig(nil, out)  // 2nd argument of 'LoadConfig' requires '&'
 Finished outparamcheck
+Check(s) produced output: [outparamcheck]
 `,
 			},
 			{
@@ -134,7 +141,214 @@ func Foo() {
 				WantOutput: `Running outparamcheck...
 ../foo.go:7:26: _ = json.Unmarshal(nil, out)  // 2nd argument of 'Unmarshal' requires '&'
 Finished outparamcheck
+Check(s) produced output: [outparamcheck]
 `,
+			},
+		},
+	)
+}
+
+func TestUpgradeConfig(t *testing.T) {
+	pluginProvider, err := pluginapitester.NewPluginProviderFromLocator(okgoPluginLocator, okgoPluginResolver)
+	require.NoError(t, err)
+
+	assetPath, err := products.Bin("outparamcheck-asset")
+	require.NoError(t, err)
+	assetProvider := pluginapitester.NewAssetProvider(assetPath)
+
+	pluginapitester.RunUpgradeConfigTest(t,
+		pluginProvider,
+		[]pluginapitester.AssetProvider{assetProvider},
+		[]pluginapitester.UpgradeConfigTestCase{
+			{
+				Name: `legacy configuration with empty "args" field is updated`,
+				ConfigFiles: map[string]string{
+					"godel/config/godel.yml": godelYML,
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    filters:
+      - value: "should have comment or be unexported"
+      - type: name
+        value: ".*.pb.go"
+`,
+				},
+				WantOutput: `Upgraded configuration for check-plugin.yml
+`,
+				WantFiles: map[string]string{
+					"godel/config/check-plugin.yml": `release-tag: ""
+checks:
+  outparamcheck:
+    skip: false
+    priority: null
+    config: {}
+    filters:
+    - type: ""
+      value: should have comment or be unexported
+    exclude:
+      names:
+      - .*.pb.go
+      paths: []
+exclude:
+  names: []
+  paths: []
+`,
+				},
+			},
+			{
+				Name: `legacy configuration with "config" args is upgraded`,
+				ConfigFiles: map[string]string{
+					"godel/config/godel.yml": godelYML,
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    args:
+      - "-config"
+      - |
+        {
+          "github.com/palantir/go-palantir/configloading.LoadConfig": [1],
+          "github.com/palantir/go-palantir/safejson.Decode": [1]
+        }
+`,
+				},
+				WantOutput: `Upgraded configuration for check-plugin.yml
+`,
+				WantFiles: map[string]string{
+					"godel/config/check-plugin.yml": `release-tag: ""
+checks:
+  outparamcheck:
+    skip: false
+    priority: null
+    config:
+      out-param-funcs:
+        github.com/palantir/go-palantir/configloading.LoadConfig:
+        - 1
+        github.com/palantir/go-palantir/safejson.Decode:
+        - 1
+    filters: []
+    exclude:
+      names: []
+      paths: []
+exclude:
+  names: []
+  paths: []
+`,
+				},
+			},
+			{
+				Name: `legacy configuration with args other than "config" fails`,
+				ConfigFiles: map[string]string{
+					"godel/config/godel.yml": godelYML,
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    args:
+      - "-help"
+`,
+				},
+				WantError: true,
+				WantOutput: `Failed to upgrade configuration:
+	godel/config/check-plugin.yml: failed to upgrade check "outparamcheck" legacy configuration: failed to upgrade asset configuration: outparamcheck-asset only supports legacy configuration if the first element in "args" is "-config"
+`,
+				WantFiles: map[string]string{
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    args:
+      - "-help"
+`,
+				},
+			},
+			{
+				Name: `legacy configuration with args that starts with "-config" but has more than 2 arguments fails"`,
+				ConfigFiles: map[string]string{
+					"godel/config/godel.yml": godelYML,
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    args:
+      - "-config"
+      - a
+      - b
+`,
+				},
+				WantError: true,
+				WantOutput: `Failed to upgrade configuration:
+	godel/config/check-plugin.yml: failed to upgrade check "outparamcheck" legacy configuration: failed to upgrade asset configuration: outparamcheck-asset only supports legacy configuration if "args" has exactly one element after "-config"
+`,
+				WantFiles: map[string]string{
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    args:
+      - "-config"
+      - a
+      - b
+`,
+				},
+			},
+			{
+				Name: `legacy configuration with "-config" argument that is not a valid JSON map fails`,
+				ConfigFiles: map[string]string{
+					"godel/config/godel.yml": godelYML,
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    args:
+      - "-config"
+      - |
+        {"foo":"bar",}
+`,
+				},
+				WantError: true,
+				WantOutput: `Failed to upgrade configuration:
+	godel/config/check-plugin.yml: failed to upgrade check "outparamcheck" legacy configuration: failed to upgrade asset configuration: failed to unmarshal second element of "args" in outparamcheck-asset legacy configuration as JSON map: invalid character '}' looking for beginning of object key string
+`,
+				WantFiles: map[string]string{
+					"godel/config/check-plugin.yml": `
+legacy-config: true
+checks:
+  outparamcheck:
+    args:
+      - "-config"
+      - |
+        {"foo":"bar",}
+`,
+				},
+			},
+			{
+				Name: `valid v0 config works`,
+				ConfigFiles: map[string]string{
+					"godel/config/godel.yml": godelYML,
+					"godel/config/check-plugin.yml": `
+checks:
+  outparamcheck:
+    config:
+      # comment
+      out-param-funcs:
+        "github.com/palantir/go-palantir/configloading.LoadConfig": [1]
+        "github.com/palantir/go-palantir/safejson.Decode": [1]
+`,
+				},
+				WantOutput: ``,
+				WantFiles: map[string]string{
+					"godel/config/check-plugin.yml": `
+checks:
+  outparamcheck:
+    config:
+      # comment
+      out-param-funcs:
+        "github.com/palantir/go-palantir/configloading.LoadConfig": [1]
+        "github.com/palantir/go-palantir/safejson.Decode": [1]
+`,
+				},
 			},
 		},
 	)
