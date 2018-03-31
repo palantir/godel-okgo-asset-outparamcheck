@@ -20,7 +20,7 @@ import (
 )
 
 type Config struct {
-	OutParamFuncs map[string][]int `yaml:"out-param-funcs"`
+	OutParamFuncs map[string][]int `yaml:"out-param-funcs,omitempty"`
 }
 
 func UpgradeConfig(cfgBytes []byte) ([]byte, error) {
