@@ -31,10 +31,6 @@ required = ["github.com/palantir/outparamcheck"]
   name = "github.com/dustin/go-humanize"
 
 [[constraint]]
-  name = "github.com/go-yaml/yaml"
-  version = "2.1.1"
-
-[[constraint]]
   name = "github.com/kisielk/gotool"
   version = "1.0.0"
 
