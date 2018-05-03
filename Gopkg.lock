@@ -126,14 +126,14 @@
   revision = "6ef6fc2811e260af0641aae25a45881217b3cf3d"
 
 [[projects]]
-  branch = "master"
   name = "github.com/palantir/okgo"
   packages = [
     "checker",
     "okgo",
     "okgotester"
   ]
-  revision = "e9fd63d0970b44dfc1c6edeb99dd7760ef76b8c1"
+  revision = "32725b197ce491268c43f7036aa702bb99dac21c"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -237,6 +237,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0583bd9a0653bb592c00e4e574ac2a4d5913e9033bbd9d630d587a100a824b7e"
+  inputs-digest = "b0812c62143199ab5535fb73cc8a00b29ff4379f21ee11acd17c268d2aacbf95"
   solver-name = "gps-cdcl"
   solver-version = 1
