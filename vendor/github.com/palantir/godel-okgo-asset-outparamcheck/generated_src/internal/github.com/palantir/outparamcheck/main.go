@@ -5,8 +5,8 @@
 package amalgomated
 
 import (
-	"fmt"
 	"github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/amalgomated_flag"
+	"fmt"
 	"os"
 	"runtime"
 
