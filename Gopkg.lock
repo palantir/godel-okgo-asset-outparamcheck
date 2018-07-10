@@ -136,14 +136,14 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/palantir/outparamcheck"
   packages = [
     ".",
     "exprs",
     "outparamcheck",
   ]
-  revision = "5786d96763fcad4bd8938541e38fa55a60705264"
+  revision = "885e3c5b2663baa5202ba1c4ab42dc816ed82acb"
+  version = "v1.2.0"
 
 [[projects]]
   branch = "master"
@@ -237,6 +237,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6ac181558d09e1caeb9d156baad865f1e0a819c5d1e548a596d6c912cf019c11"
+  inputs-digest = "9e675049891c903e249b8c709e3c01d21485024b55225d08c0c7e314ae98b423"
   solver-name = "gps-cdcl"
   solver-version = 1
