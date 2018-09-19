@@ -44,10 +44,6 @@ func (c *Checker) Priority() (okgo.CheckerPriority, error) {
 
 var lineRegexp = regexp.MustCompile(`(.+):(\d+):(\d+)\t(.+)`)
 
-func init() {
-	checker.SetGoBuildDefaultReleaseTags()
-}
-
 func (c *Checker) Check(pkgPaths []string, pkgDir string, stdout io.Writer) {
 	cfgJSON, err := json.Marshal(c.OutParamFns)
 	if err != nil {
