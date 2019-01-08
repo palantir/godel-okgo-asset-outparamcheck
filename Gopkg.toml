@@ -53,3 +53,7 @@ required = ["github.com/palantir/outparamcheck"]
 [[constraint]]
   branch = "master"
   name = "golang.org/x/tools"
+
+[prune]
+  go-tests = true
+  unused-packages = true
