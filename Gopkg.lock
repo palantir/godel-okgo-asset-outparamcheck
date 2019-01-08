@@ -154,6 +154,25 @@
   revision = "6ef6fc2811e260af0641aae25a45881217b3cf3d"
 
 [[projects]]
+  digest = "1:a08a899e480eaa0cbdf84435f44ce4b69cd89fb33378eed0a96af45edda900eb"
+  name = "github.com/palantir/godel-okgo-asset-outparamcheck"
+  packages = [
+    "generated_src",
+    "generated_src/internal/github.com/palantir/outparamcheck",
+    "generated_src/internal/github.com/palantir/outparamcheck/amalgomated_flag",
+    "generated_src/internal/github.com/palantir/outparamcheck/exprs",
+    "generated_src/internal/github.com/palantir/outparamcheck/outparamcheck",
+    "outparamcheck",
+    "outparamcheck/config",
+    "outparamcheck/config/internal/legacy",
+    "outparamcheck/config/internal/v0",
+    "outparamcheck/creator",
+  ]
+  pruneopts = "UT"
+  revision = "b8aa55c0dbb2b5f5323391b343d45ff8ec8bbbd1"
+  version = "v1.2.0"
+
+[[projects]]
   digest = "1:0b29cbfa2693c66eb778625dfcf20abbedd10b14d6f4600414405ab98ee7dcac"
   name = "github.com/palantir/okgo"
   packages = [
@@ -298,6 +317,16 @@
     "github.com/kisielk/gotool",
     "github.com/nmiyake/pkg/gofiles",
     "github.com/palantir/amalgomate/amalgomated",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/amalgomated_flag",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/exprs",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/outparamcheck",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/legacy",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/v0",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/creator",
     "github.com/palantir/godel/framework/pluginapitester",
     "github.com/palantir/godel/pkg/products/v2/products",
     "github.com/palantir/godel/pkg/versionedconfig",
