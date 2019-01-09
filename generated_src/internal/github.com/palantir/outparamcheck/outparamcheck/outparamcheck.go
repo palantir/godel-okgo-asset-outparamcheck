@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"go/ast"
-	"go/build"
 	"go/token"
 	"go/types"
 	"io/ioutil"
@@ -17,11 +16,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kisielk/gotool"
 	"github.com/pkg/errors"
-	"golang.org/x/tools/go/loader"
-
-	"github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/exprs"
+	"golang.org/x/tools/go/packages"
 )
 
 func Run(cfgParam string, paths []string) error {
@@ -46,11 +42,11 @@ func Run(cfgParam string, paths []string) error {
 		cfg[key] = val
 	}
 
-	prog, err := load(paths)
+	pkgs, err := load(paths)
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	errs := run(prog, cfg)
+	errs := run(pkgs, cfg)
 	if len(errs) > 0 {
 		reportErrors(errs)
 		return fmt.Errorf("%s; the parameters listed above require the use of '&', for example f(&x) instead of f(x)",
@@ -59,33 +55,28 @@ func Run(cfgParam string, paths []string) error {
 	return nil
 }
 
-func run(prog *loader.Program, cfg Config) []OutParamError {
+func run(pkgs []*packages.Package, cfg Config) []OutParamError {
 	var errs []OutParamError
 	var mut sync.Mutex	// guards errs
 	var wg sync.WaitGroup
-	for _, pkgInfo := range prog.InitialPackages() {
-		if pkgInfo.Pkg.Path() == "unsafe" {	// not a real package
-			continue
-		}
-
+	for _, pkg := range pkgs {
 		wg.Add(1)
 
-		go func(pkgInfo *loader.PackageInfo) {
+		go func(pkg *packages.Package) {
 			defer wg.Done()
 			v := &visitor{
-				prog:	prog,
-				pkg:	pkgInfo,
+				pkg:	pkg,
 				lines:	map[string][]string{},
 				errors:	[]OutParamError{},
 				cfg:	cfg,
 			}
-			for _, astFile := range pkgInfo.Files {
-				exprs.Walk(v, astFile)
+			for _, astFile := range v.pkg.Syntax {
+				ast.Walk(v, astFile)
 			}
 			mut.Lock()
 			defer mut.Unlock()
 			errs = append(errs, v.errors...)
-		}(pkgInfo)
+		}(pkg)
 	}
 	wg.Wait()
 	return errs
@@ -107,49 +98,86 @@ func loadCfg(cfgJSON string) (Config, error) {
 	return cfg, nil
 }
 
-func load(paths []string) (*loader.Program, error) {
-	loadcfg := loader.Config{
-		Build: &build.Default,
+func load(paths []string) ([]*packages.Package, error) {
+	cfg := &packages.Config{
+		Mode:	packages.LoadAllSyntax,
+		Tests:	true,
 	}
-	includeTests := true
-	rest, err := loadcfg.FromArgs(gotool.ImportPaths(paths), includeTests)
+	pkgs, err := packages.Load(cfg, paths...)
 	if err != nil {
-		return nil, errors.Wrapf(err, "could not parse arguments")
+		return nil, err
 	}
-	if len(rest) > 0 {
-		return nil, errors.Errorf("unhandled extra arguments: %v", rest)
+	// check for errors in the initial packages
+	for _, pkg := range pkgs {
+		if len(pkg.Errors) > 0 {
+			return nil, fmt.Errorf("errors while loading package %s: %v", pkg.ID, pkg.Errors)
+		}
 	}
-	prog, err := loadcfg.Load()
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-	return prog, nil
+	return pkgs, nil
 }
 
 type visitor struct {
-	prog	*loader.Program
-	pkg	*loader.PackageInfo
+	pkg	*packages.Package
 	lines	map[string][]string
 	errors	[]OutParamError
 	cfg	Config
 }
 
-func (v *visitor) Visit(expr ast.Expr) {
-	call, ok := expr.(*ast.CallExpr)
-	if !ok {
-		return
+func (v *visitor) Visit(node ast.Node) ast.Visitor {
+	switch stmt := node.(type) {
+	case *ast.AssignStmt:
+		for _, expr := range stmt.Rhs {
+			v.processExpression(expr)
+		}
+	case *ast.GoStmt:
+		v.processExpression(stmt.Call)
+	case *ast.DeferStmt:
+		v.processExpression(stmt.Call)
+	case *ast.SendStmt:
+		v.processExpression(stmt.Value)
+	case *ast.ReturnStmt:
+		for _, expr := range stmt.Results {
+			v.processExpression(expr)
+		}
+	case *ast.SwitchStmt:
+		for _, stmt := range stmt.Body.List {
+			if caseClauseStmt, ok := stmt.(*ast.CaseClause); ok {
+				for _, expr := range caseClauseStmt.List {
+					v.processExpression(expr)
+				}
+			}
+		}
+	case *ast.ExprStmt:
+		v.processExpression(stmt.X)
 	}
-	key, method, ok := v.keyAndName(call)
-	if !ok {
-		return
-	}
-	for name, outs := range v.cfg {
-		// Suffix-matching so they also apply to vendored packages
-		if strings.HasSuffix(key, name) {
-			for _, i := range outs {
-				arg := call.Args[i]
-				if !isAddr(arg) {
-					v.errorAt(arg.Pos(), method, i)
+	return v
+}
+
+func (v *visitor) processExpression(expr ast.Expr) {
+	switch expr := expr.(type) {
+	case *ast.BinaryExpr:
+		v.processExpression(expr.X)
+		v.processExpression(expr.Y)
+	case *ast.KeyValueExpr:
+		v.processExpression(expr.Value)
+	case *ast.CompositeLit:
+		for _, subExpr := range expr.Elts {
+			v.processExpression(subExpr)
+		}
+	case *ast.CallExpr:
+		call := expr
+		key, method, ok := v.keyAndName(call)
+		if !ok {
+			return
+		}
+		for name, outs := range v.cfg {
+			// Suffix-matching so they also apply to vendored packages
+			if strings.HasSuffix(key, name) {
+				for _, i := range outs {
+					arg := call.Args[i]
+					if !isAddr(arg) {
+						v.errorAt(arg.Pos(), method, i)
+					}
 				}
 			}
 		}
@@ -161,18 +189,18 @@ func (v *visitor) keyAndName(call *ast.CallExpr) (key string, name string, ok bo
 	case *ast.Ident:
 		// Function calls without a selector; this includes calls within the
 		// same package as well as calls into dot-imported packages
-		if def, ok := v.pkg.Uses[target]; ok && def.Pkg() != nil {
+		if def, ok := v.pkg.TypesInfo.Uses[target]; ok && def.Pkg() != nil {
 			return fmt.Sprintf("%v.%v", def.Pkg().Path(), target.Name), target.Name, true
 		}
 	case *ast.SelectorExpr:
 		// Function calls into other packages
 		if recv, ok := target.X.(*ast.Ident); ok {
-			if pkg, ok := v.pkg.Uses[recv].(*types.PkgName); ok {
+			if pkg, ok := v.pkg.TypesInfo.Uses[recv].(*types.PkgName); ok {
 				return fmt.Sprintf("%v.%v", pkg.Imported().Path(), target.Sel.Name), target.Sel.Name, true
 			}
 		}
 		// Method calls
-		if typ, ok := v.pkg.Types[target.X]; ok {
+		if typ, ok := v.pkg.TypesInfo.Types[target.X]; ok {
 			return fmt.Sprintf("%v.%v", typ.Type.String(), target.Sel.Name), target.Sel.Name, true
 		}
 	}
@@ -180,7 +208,7 @@ func (v *visitor) keyAndName(call *ast.CallExpr) (key string, name string, ok bo
 }
 
 func (v *visitor) errorAt(pos token.Pos, method string, argument int) {
-	position := v.prog.Fset.Position(pos)
+	position := v.pkg.Fset.Position(pos)
 	lines, ok := v.lines[position.Filename]
 	if !ok {
 		contents, err := ioutil.ReadFile(position.Filename)
