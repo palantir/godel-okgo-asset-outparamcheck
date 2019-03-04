@@ -16,7 +16,7 @@ package config
 
 import (
 	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck"
-	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/v0"
+	v0 "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/v0"
 )
 
 type Outparamcheck v0.Config
