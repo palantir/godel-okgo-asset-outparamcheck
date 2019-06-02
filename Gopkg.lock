@@ -143,6 +143,24 @@
   revision = "6ef6fc2811e260af0641aae25a45881217b3cf3d"
 
 [[projects]]
+  digest = "1:46e08f2f280d7de0d85e881f9d777239893ce331b56e950ceadd10dca182a5f8"
+  name = "github.com/palantir/godel-okgo-asset-outparamcheck"
+  packages = [
+    "generated_src",
+    "generated_src/internal/github.com/palantir/outparamcheck",
+    "generated_src/internal/github.com/palantir/outparamcheck/amalgomated_flag",
+    "generated_src/internal/github.com/palantir/outparamcheck/outparamcheck",
+    "outparamcheck",
+    "outparamcheck/config",
+    "outparamcheck/config/internal/legacy",
+    "outparamcheck/config/internal/v0",
+    "outparamcheck/creator",
+  ]
+  pruneopts = "UT"
+  revision = "af3a4465a31c884f6fa035003ce8752879fc4604"
+  version = "v1.4.0"
+
+[[projects]]
   digest = "1:0b29cbfa2693c66eb778625dfcf20abbedd10b14d6f4600414405ab98ee7dcac"
   name = "github.com/palantir/okgo"
   packages = [
@@ -292,6 +310,15 @@
     "github.com/dustin/go-humanize",
     "github.com/nmiyake/pkg/gofiles",
     "github.com/palantir/amalgomate/amalgomated",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/amalgomated_flag",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/outparamcheck",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/legacy",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/v0",
+    "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/creator",
     "github.com/palantir/godel/framework/pluginapitester",
     "github.com/palantir/godel/pkg/products/v2/products",
     "github.com/palantir/godel/pkg/versionedconfig",
