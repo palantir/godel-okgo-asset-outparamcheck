@@ -65,6 +65,10 @@ checks:
 				Name: "output parameter not used properly",
 				Specs: []gofiles.GoFileSpec{
 					{
+						RelPath: "go.mod",
+						Src:     "module foo",
+					},
+					{
 						RelPath: "foo.go",
 						Src: `package foo
 
@@ -88,6 +92,10 @@ Check(s) produced output: [outparamcheck]
 			{
 				Name: "output parameter specified by function not used properly",
 				Specs: []gofiles.GoFileSpec{
+					{
+						RelPath: "go.mod",
+						Src:     "module foo",
+					},
 					{
 						RelPath: "foo.go",
 						Src: `package foo
@@ -119,6 +127,10 @@ Check(s) produced output: [outparamcheck]
 			{
 				Name: "output parameter not used properly in file from inner directory",
 				Specs: []gofiles.GoFileSpec{
+					{
+						RelPath: "go.mod",
+						Src:     "module foo",
+					},
 					{
 						RelPath: "foo.go",
 						Src: `package foo
