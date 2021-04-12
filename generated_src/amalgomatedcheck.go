@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sort"
 
-	outparamcheck "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck"
+	outparamcheck "."
 )
 
 var programs = map[string]func(){"outparamcheck": func() {
