@@ -57,7 +57,7 @@ func Run(cfgParam string, paths []string) error {
 
 func run(pkgs []*packages.Package, cfg Config) []OutParamError {
 	var errs []OutParamError
-	var mut sync.Mutex	// guards errs
+	var mut sync.Mutex // guards errs
 	var wg sync.WaitGroup
 	for _, pkg := range pkgs {
 		wg.Add(1)
@@ -65,10 +65,10 @@ func run(pkgs []*packages.Package, cfg Config) []OutParamError {
 		go func(pkg *packages.Package) {
 			defer wg.Done()
 			v := &visitor{
-				pkg:	pkg,
-				lines:	map[string][]string{},
-				errors:	[]OutParamError{},
-				cfg:	cfg,
+				pkg:    pkg,
+				lines:  map[string][]string{},
+				errors: []OutParamError{},
+				cfg:    cfg,
 			}
 			for _, astFile := range v.pkg.Syntax {
 				ast.Walk(v, astFile)
@@ -100,8 +100,8 @@ func loadCfg(cfgJSON string) (Config, error) {
 
 func load(paths []string) ([]*packages.Package, error) {
 	cfg := &packages.Config{
-		Mode:	packages.LoadAllSyntax,
-		Tests:	true,
+		Mode:  packages.LoadAllSyntax,
+		Tests: true,
 	}
 	pkgs, err := packages.Load(cfg, paths...)
 	if err != nil {
@@ -117,10 +117,10 @@ func load(paths []string) ([]*packages.Package, error) {
 }
 
 type visitor struct {
-	pkg	*packages.Package
-	lines	map[string][]string
-	errors	[]OutParamError
-	cfg	Config
+	pkg    *packages.Package
+	lines  map[string][]string
+	errors []OutParamError
+	cfg    Config
 }
 
 func (v *visitor) Visit(node ast.Node) ast.Visitor {
