@@ -17,11 +17,10 @@ package legacy
 import (
 	"encoding/json"
 
+	v0 "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/v0"
 	"github.com/palantir/godel/v2/pkg/versionedconfig"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
-
-	v0 "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/v0"
 )
 
 type Config struct {
