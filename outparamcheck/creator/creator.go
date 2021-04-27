@@ -15,13 +15,12 @@
 package creator
 
 import (
+	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck"
+	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config"
 	"github.com/palantir/okgo/checker"
 	"github.com/palantir/okgo/okgo"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
-
-	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck"
-	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config"
 )
 
 func Outparamcheck() checker.Creator {
