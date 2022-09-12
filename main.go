@@ -18,7 +18,7 @@ import (
 	"os"
 
 	"github.com/palantir/amalgomate/amalgomated"
-	amalgomatedcheck "github.com/palantir/godel-okgo-asset-outparamcheck/generated_src"
+	amalgomatedcheck "github.com/palantir/godel-okgo-asset-outparamcheck/internal/generated_src"
 	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config"
 	"github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/creator"
 	"github.com/palantir/okgo/checker"

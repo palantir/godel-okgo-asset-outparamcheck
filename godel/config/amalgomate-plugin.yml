@@ -1,5 +1,5 @@
 amalgomators:
   outparamcheck:
     config: check.yml
-    output-dir: generated_src
+    output-dir: internal/generated_src
     pkg: amalgomatedcheck
