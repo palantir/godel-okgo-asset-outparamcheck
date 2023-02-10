@@ -1,6 +1,8 @@
 products:
   outparamcheck-asset:
     build:
+      environment:
+        CGO_ENABLED: "0"
       main-pkg: .
       os-archs:
         - os: darwin
