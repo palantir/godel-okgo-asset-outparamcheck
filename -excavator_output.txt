@@ -1,0 +1,29 @@
+./godelw verify failed after updating godel plugins and assets
+
+Command that caused error:
+./godelw verify --skip-test --skip-check
+
+Output:
+Running format...
+Running mod...
+go: downloading github.com/palantir/outparamcheck v1.16.0
+go: downloading github.com/palantir/amalgomate v1.31.0
+go: downloading golang.org/x/tools v0.11.0
+go: downloading github.com/palantir/pkg/gittest v1.2.0
+github.com/palantir/godel-okgo-asset-outparamcheck imports
+	github.com/palantir/amalgomate/amalgomated: github.com/palantir/amalgomate@v1.31.0: read "https:/proxy.golang.org/@v/v1.31.0.zip": read tcp 172.26.64.27:47848->142.251.40.241:443: read: connection timed out
+github.com/palantir/godel-okgo-asset-outparamcheck/generated_src/internal/github.com/palantir/outparamcheck/outparamcheck imports
+	golang.org/x/tools/go/packages: golang.org/x/tools@v0.11.0: read "https:/proxy.golang.org/@v/v0.11.0.zip": stream error: stream ID 7; NO_ERROR; received from peer
+github.com/palantir/godel-okgo-asset-outparamcheck/tools imports
+	github.com/palantir/outparamcheck: github.com/palantir/outparamcheck@v1.16.0: Get "https://proxy.golang.org/github.com/palantir/outparamcheck/@v/v1.16.0.zip": read tcp 172.26.64.27:47848->142.251.40.241:443: read: connection timed out
+github.com/palantir/godel-okgo-asset-outparamcheck/integration_test tested by
+	github.com/palantir/godel-okgo-asset-outparamcheck/integration_test.test imports
+	github.com/palantir/godel/v2/framework/pluginapitester imports
+	github.com/palantir/godel/v2/framework/builtintasks imports
+	github.com/palantir/godel/v2/framework/builtintasks/githubwiki tested by
+	github.com/palantir/godel/v2/framework/builtintasks/githubwiki.test imports
+	github.com/palantir/pkg/gittest: github.com/palantir/pkg/gittest@v1.2.0: Get "https://proxy.golang.org/github.com/palantir/pkg/gittest/@v/v1.2.0.zip": read tcp 172.26.64.27:47848->142.251.40.241:443: read: connection timed out
+Running amalgomate...
+Running license...
+Failed tasks:
+	mod
