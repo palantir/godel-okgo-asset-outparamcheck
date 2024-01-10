@@ -73,7 +73,7 @@ github.com/nwaples/rardecode
 # github.com/palantir/amalgomate v1.37.0
 ## explicit; go 1.21
 github.com/palantir/amalgomate/amalgomated
-# github.com/palantir/godel/v2 v2.97.0
+# github.com/palantir/godel/v2 v2.98.0
 ## explicit; go 1.21
 github.com/palantir/godel/v2/framework/artifactresolver
 github.com/palantir/godel/v2/framework/builtintasks
@@ -104,7 +104,7 @@ github.com/palantir/godel/v2/pkg/versionedconfig
 github.com/palantir/okgo/checker
 github.com/palantir/okgo/okgo
 github.com/palantir/okgo/okgotester
-# github.com/palantir/outparamcheck v1.21.0
+# github.com/palantir/outparamcheck v1.22.0
 ## explicit; go 1.21
 github.com/palantir/outparamcheck
 github.com/palantir/outparamcheck/outparamcheck

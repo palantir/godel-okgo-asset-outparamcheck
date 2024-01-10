@@ -6,9 +6,9 @@ require (
 	github.com/dustin/go-humanize v1.0.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.37.0
-	github.com/palantir/godel/v2 v2.97.0
+	github.com/palantir/godel/v2 v2.98.0
 	github.com/palantir/okgo v1.44.0
-	github.com/palantir/outparamcheck v1.21.0
+	github.com/palantir/outparamcheck v1.22.0
 	github.com/palantir/pkg/cobracli v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.8.4
