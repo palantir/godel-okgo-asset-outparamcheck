@@ -105,8 +105,8 @@ github.com/palantir/godel/v2/pkg/versionedconfig
 github.com/palantir/okgo/checker
 github.com/palantir/okgo/okgo
 github.com/palantir/okgo/okgotester
-# github.com/palantir/outparamcheck v1.23.0
-## explicit; go 1.21
+# github.com/palantir/outparamcheck v1.31.0
+## explicit; go 1.24.0
 github.com/palantir/outparamcheck
 github.com/palantir/outparamcheck/outparamcheck
 # github.com/palantir/pkg v1.1.0
