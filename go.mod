@@ -3,7 +3,7 @@ module github.com/palantir/godel-okgo-asset-outparamcheck
 go 1.24.0
 
 require (
-	github.com/dustin/go-humanize v1.0.0
+	github.com/dustin/go-humanize v1.0.1
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.51.0
 	github.com/palantir/godel/v2 v2.119.0
