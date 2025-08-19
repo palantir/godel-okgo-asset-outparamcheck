@@ -6,7 +6,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.51.0
-	github.com/palantir/godel/v2 v2.119.0
+	github.com/palantir/godel/v2 v2.134.0
 	github.com/palantir/okgo v1.48.0
 	github.com/palantir/outparamcheck v1.23.0
 	github.com/palantir/pkg/cobracli v1.2.0
