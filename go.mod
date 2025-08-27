@@ -8,7 +8,7 @@ require (
 	github.com/palantir/amalgomate v1.52.0
 	github.com/palantir/godel/v2 v2.137.0
 	github.com/palantir/okgo v1.48.0
-	github.com/palantir/outparamcheck v1.31.0
+	github.com/palantir/outparamcheck v1.32.0
 	github.com/palantir/pkg/cobracli v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.11.0
