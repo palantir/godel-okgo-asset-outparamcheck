@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/nmiyake/pkg/gofiles v1.2.0
-	github.com/palantir/amalgomate v1.51.0
+	github.com/palantir/amalgomate v1.52.0
 	github.com/palantir/godel/v2 v2.137.0
 	github.com/palantir/okgo v1.48.0
 	github.com/palantir/outparamcheck v1.31.0
