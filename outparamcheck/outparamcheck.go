@@ -28,10 +28,15 @@ import (
 const (
 	TypeName okgo.CheckerType     = "outparamcheck"
 	Priority okgo.CheckerPriority = 0
+	MultiCPU okgo.CheckerMultiCPU = true
 )
 
 type Checker struct {
 	OutParamFns map[string][]int
+}
+
+func (c *Checker) MultiCPU() (okgo.CheckerMultiCPU, error) {
+	return MultiCPU, nil
 }
 
 func (c *Checker) Type() (okgo.CheckerType, error) {
