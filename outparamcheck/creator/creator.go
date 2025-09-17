@@ -24,9 +24,10 @@ import (
 )
 
 func Outparamcheck() checker.Creator {
-	return checker.NewCreator(
+	return checker.NewCreatorWithMultiCPU(
 		outparamcheck.TypeName,
 		outparamcheck.Priority,
+		outparamcheck.MultiCPU,
 		func(cfgYML []byte) (okgo.Checker, error) {
 			var cfg config.Outparamcheck
 			if err := yaml.Unmarshal(cfgYML, &cfg); err != nil {
