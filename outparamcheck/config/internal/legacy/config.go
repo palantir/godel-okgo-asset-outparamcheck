@@ -16,6 +16,7 @@ package legacy
 
 import (
 	"encoding/json"
+	"maps"
 
 	v0 "github.com/palantir/godel-okgo-asset-outparamcheck/outparamcheck/config/internal/v0"
 	"github.com/palantir/godel/v2/pkg/versionedconfig"
@@ -54,9 +55,7 @@ func UpgradeConfig(cfgBytes []byte) ([]byte, error) {
 	if len(jsonMapCfg) > 0 {
 		upgradedCfg.OutParamFuncs = make(map[string][]int)
 	}
-	for k, v := range jsonMapCfg {
-		upgradedCfg.OutParamFuncs[k] = v
-	}
+	maps.Copy(upgradedCfg.OutParamFuncs, jsonMapCfg)
 
 	upgradedCfgBytes, err := yaml.Marshal(upgradedCfg)
 	if err != nil {
