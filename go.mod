@@ -2,6 +2,8 @@ module github.com/palantir/godel-okgo-asset-outparamcheck
 
 go 1.26.0
 
+toolchain go1.26.3
+
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/nmiyake/pkg/gofiles v1.2.0
