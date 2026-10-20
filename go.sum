@@ -62,8 +62,8 @@ github.com/palantir/godel/v2 v2.202.0 h1:Ut2BZ6TB5fWXzOBd8tCTe0AXQZsegDBDF7UgI8X
 github.com/palantir/godel/v2 v2.202.0/go.mod h1:KCjbnzPEAjPrrBXInaBgs0c2mJynPUT141DOiNGaHKM=
 github.com/palantir/okgo v1.75.0 h1:LstCNBR9qE02MY3+xRMdpeSg3t5Jw5OM+DGrOdFB6pc=
 github.com/palantir/okgo v1.75.0/go.mod h1:FHBPwf/U+vRSkFZ4IpiM3NLGbI2SJGPjW6l8dxantXo=
-github.com/palantir/outparamcheck v1.41.0 h1:R8jW+rV8GuDIvFgLT1Hmk1F717pAVEbAIddDLIG+KrQ=
-github.com/palantir/outparamcheck v1.41.0/go.mod h1:zBWoisrp2//e89O+tLej8kR6cZCJw6tZzL8A2mWwf2o=
+github.com/palantir/outparamcheck v1.42.0 h1:mBYFQhDMRvsAfDhVfyL8x5sCUr2LTMcIWWT59RPQTWM=
+github.com/palantir/outparamcheck v1.42.0/go.mod h1:eftrexrLSAhXAhFrBFh/AckRMLLeXZpI62PMVYiSbJE=
 github.com/palantir/pkg v1.2.0 h1:GxXiXLcayV/JNptEyBIDvUrd1NRzI+TwpsL64sufrd8=
 github.com/palantir/pkg v1.2.0/go.mod h1:y8Dt3/qSZjq+0pLBeCsxXDqzby3G08bw85gZmJm5mwA=
 github.com/palantir/pkg/cobracli v1.4.0 h1:pMSAaz3rzfkVuaGgOmrgqMkDefizoHdcXtzUroFf5u8=
