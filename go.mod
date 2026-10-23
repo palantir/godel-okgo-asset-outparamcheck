@@ -7,7 +7,7 @@ toolchain go1.27.3
 require (
 	github.com/dustin/go-humanize v1.1.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
-	github.com/palantir/amalgomate v1.61.0
+	github.com/palantir/amalgomate v1.62.0
 	github.com/palantir/godel/v2 v2.203.0
 	github.com/palantir/okgo v1.76.0
 	github.com/palantir/outparamcheck v1.42.0
